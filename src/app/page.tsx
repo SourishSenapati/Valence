@@ -1,101 +1,58 @@
-import Image from "next/image";
+import Link from "next/link";
+import { GlassButton } from "@/components/ui/GlassButton";
+import { GlassPanel } from "@/components/ui/GlassPanel";
+import { ArrowRight, Target, ShieldCheck, BarChart3 } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center space-y-12">
+      <div className="space-y-6 max-w-3xl">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-industrial-accent/10 border border-industrial-accent/20 text-industrial-accent text-xs font-bold uppercase tracking-widest animate-in fade-in slide-in-from-top-4 duration-1000">
+          <ShieldCheck className="w-4 h-4" />
+          Enterprise Performance Engine
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        
+        <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter italic animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-150">
+          VALENCE
+        </h1>
+        
+        <p className="text-xl text-gray-400 font-medium max-w-2xl mx-auto animate-in fade-in duration-1000 delay-300">
+          Precision-engineered performance management and goal auditing for industrial scale operations.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-500">
+        <GlassPanel className="p-8 text-left space-y-4 border-l-4 border-l-industrial-accent" delay={0.6}>
+          <Target className="w-8 h-8 text-industrial-accent" />
+          <h3 className="text-xl font-bold text-white">Goal Orchestration</h3>
+          <p className="text-sm text-gray-500 leading-relaxed">Dynamic multi-goal builder with strict weightage enforcement and thrust area alignment.</p>
+        </GlassPanel>
+
+        <GlassPanel className="p-8 text-left space-y-4 border-l-4 border-l-industrial-success" delay={0.7}>
+          <ShieldCheck className="w-8 h-8 text-industrial-success" />
+          <h3 className="text-xl font-bold text-white">Immutable Auditing</h3>
+          <p className="text-sm text-gray-500 leading-relaxed">Secure manager approval workflows with full state-change audit logging and SLA monitoring.</p>
+        </GlassPanel>
+
+        <GlassPanel className="p-8 text-left space-y-4 border-l-4 border-l-purple-500" delay={0.8}>
+          <BarChart3 className="w-8 h-8 text-purple-500" />
+          <h3 className="text-xl font-bold text-white">Plant Analytics</h3>
+          <p className="text-sm text-gray-500 leading-relaxed">Real-time performance telemetry featuring departmental heatmaps and QoQ achievement trends.</p>
+        </GlassPanel>
+      </div>
+
+      <div className="pt-8 animate-in fade-in zoom-in-95 duration-1000 delay-1000">
+        <Link href="/dashboard">
+          <GlassButton size="lg" className="gap-4 px-12 group">
+            Access Command Center
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </GlassButton>
+        </Link>
+      </div>
+
+      <div className="fixed bottom-8 text-[10px] text-gray-600 uppercase tracking-[0.3em] font-black pointer-events-none">
+        Industrial System v0.1.0-VALENCE
+      </div>
     </div>
   );
 }
