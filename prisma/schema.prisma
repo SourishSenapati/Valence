@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  EMPLOYEE
+  SHIFT_MANAGER
+  PLANT_HEAD
+  HR_ADMIN
+}
+
+enum UomType {
+  MIN
+  MAX
+  TIMELINE
+  ZERO
+}
+
+enum GoalStatus {
+  DRAFT
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum Quarter {
+  Q1
+  Q2
+  Q3
+  Q4
+}
+
+enum ProgressStatus {
+  NOT_STARTED
+  ON_TRACK
+  COMPLETED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  role          Role      @default(EMPLOYEE)
+  department    String?
+  
+  managerId     String?
+  manager       User?     @relation("ManagerToEmployee", fields: [managerId], references: [id])
+  employees     User[]    @relation("ManagerToEmployee")
+
+  goals         Goal[]    @relation("EmployeeGoals")
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model Goal {
+  id            String    @id @default(cuid())
+  title         String
+  description   String?
+  thrustArea    String?
+  uomType       UomType
+  targetValue   Float
+  weightage     Int
+  status        GoalStatus @default(DRAFT)
+  
+  employeeId    String
+  employee      User      @relation("EmployeeGoals", fields: [employeeId], references: [id], onDelete: Cascade)
+  
+  isShared      Boolean   @default(false)
+  lockedAt      DateTime?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  checkIns      CheckIn[]
+}
+
+model CheckIn {
+  id                String    @id @default(cuid())
+  goalId            String
+  goal              Goal      @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  quarter           Quarter
+  actualAchievement Float
+  progressStatus    ProgressStatus
+  managerComment    String?
+  timestamp         DateTime  @default(now())
+}
+
+model AuditLog {
+  id            String    @id @default(cuid())
+  entityId      String
+  action        String
+  changedBy     String
+  previousState Json?
+  newState      Json?
+  timestamp     DateTime  @default(now())
+}
+
+// NextAuth Required Models
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

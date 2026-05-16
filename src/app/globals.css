@@ -3,25 +3,37 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0a;
+  --foreground: #ffffff;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    @apply bg-industrial-900 text-white antialiased;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .glass-panel {
+    @apply bg-glass-gradient backdrop-blur-xl border border-white/10 shadow-2xl rounded-3xl;
+  }
+
+  .glass-input {
+    @apply bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-industrial-accent/50 transition-all;
+  }
+
+  .glass-button {
+    @apply bg-white/10 border border-white/10 text-white rounded-2xl px-6 py-3 font-semibold hover:bg-white/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed;
+  }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-white/10 rounded-full hover:bg-white/20;
 }

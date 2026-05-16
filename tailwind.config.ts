@@ -9,8 +9,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        industrial: {
+          900: "#0a0a0a", // deep black
+          800: "#171717", // panel background
+          accent: "#38bdf8", // electric blue
+          danger: "#ef4444", // red
+          success: "#10b981", // green
+        },
+      },
+      backgroundImage: {
+        "glass-gradient": "linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)",
       },
     },
   },
