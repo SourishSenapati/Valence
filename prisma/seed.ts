@@ -1,118 +1,134 @@
-import { PrismaClient, Role } from '@prisma/client';
+import { PrismaClient, Role, UomType, GoalStatus, Quarter, ProgressStatus } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('Starting seeding...');
+  console.log("🚀 Starting database seeding...");
 
-  // Create HR Admin
-  const hrAdmin = await prisma.user.upsert({
-    where: { email: 'hr.admin@valence.com' },
-    update: {},
-    create: {
-      name: 'HR Admin',
-      email: 'hr.admin@valence.com',
+  // 1. Clean existing data
+  await prisma.auditLog.deleteMany();
+  await prisma.checkIn.deleteMany();
+  await prisma.goal.deleteMany();
+  await prisma.user.deleteMany();
+
+  // 2. Create Users
+  const hrAdmin = await prisma.user.create({
+    data: {
+      name: "Sourish Senapati",
+      email: "sourish@valence.com",
       role: Role.HR_ADMIN,
-      department: 'Human Resources',
+      department: "Corporate",
     },
   });
-  console.log(`Created HR Admin: ${hrAdmin.name}`);
 
-  // Create Plant Head
-  const plantHead = await prisma.user.upsert({
-    where: { email: 'plant.head@valence.com' },
-    update: {},
-    create: {
-      name: 'Plant Head',
-      email: 'plant.head@valence.com',
+  const plantHead = await prisma.user.create({
+    data: {
+      name: "John Plant",
+      email: "john@valence.com",
       role: Role.PLANT_HEAD,
-      department: 'Operations',
+      department: "Manufacturing",
     },
   });
-  console.log(`Created Plant Head: ${plantHead.name}`);
 
-  // Create Shift Managers
-  const shiftManager1 = await prisma.user.upsert({
-    where: { email: 'shift.manager1@valence.com' },
-    update: { managerId: plantHead.id },
-    create: {
-      name: 'Shift Manager 1',
-      email: 'shift.manager1@valence.com',
+  const shiftManager = await prisma.user.create({
+    data: {
+      name: "Sarah Manager",
+      email: "sarah@valence.com",
       role: Role.SHIFT_MANAGER,
-      department: 'Operations',
+      department: "Operations",
       managerId: plantHead.id,
     },
   });
-  console.log(`Created Shift Manager 1: ${shiftManager1.name}`);
 
-  const shiftManager2 = await prisma.user.upsert({
-    where: { email: 'shift.manager2@valence.com' },
-    update: { managerId: plantHead.id },
-    create: {
-      name: 'Shift Manager 2',
-      email: 'shift.manager2@valence.com',
-      role: Role.SHIFT_MANAGER,
-      department: 'Operations',
-      managerId: plantHead.id,
-    },
-  });
-  console.log(`Created Shift Manager 2: ${shiftManager2.name}`);
-
-  // Create Employees reporting to Shift Manager 1
-  const employee1 = await prisma.user.upsert({
-    where: { email: 'employee1@valence.com' },
-    update: { managerId: shiftManager1.id },
-    create: {
-      name: 'Employee 1',
-      email: 'employee1@valence.com',
+  const employee = await prisma.user.create({
+    data: {
+      name: "Dave Employee",
+      email: "dave@valence.com",
       role: Role.EMPLOYEE,
-      department: 'Operations',
-      managerId: shiftManager1.id,
+      department: "Operations",
+      managerId: shiftManager.id,
     },
   });
-  console.log(`Created Employee 1: ${employee1.name}`);
 
-  const employee2 = await prisma.user.upsert({
-    where: { email: 'employee2@valence.com' },
-    update: { managerId: shiftManager1.id },
-    create: {
-      name: 'Employee 2',
-      email: 'employee2@valence.com',
-      role: Role.EMPLOYEE,
-      department: 'Operations',
-      managerId: shiftManager1.id,
+  console.log("✅ Users created.");
+
+  // 3. Create Goals for Employee
+  const goal1 = await prisma.goal.create({
+    data: {
+      title: "Reduce Production Downtime",
+      description: "Optimize machinery maintenance cycles to reduce unscheduled downtime.",
+      thrustArea: "OPERATIONAL_EXCELLENCE",
+      uomType: UomType.MIN,
+      targetValue: 5.0, // 5% downtime
+      weightage: 40,
+      status: GoalStatus.APPROVED,
+      employeeId: employee.id,
+      lockedAt: new Date(),
     },
   });
-  console.log(`Created Employee 2: ${employee2.name}`);
 
-  // Create Employees reporting to Shift Manager 2
-  const employee3 = await prisma.user.upsert({
-    where: { email: 'employee3@valence.com' },
-    update: { managerId: shiftManager2.id },
-    create: {
-      name: 'Employee 3',
-      email: 'employee3@valence.com',
-      role: Role.EMPLOYEE,
-      department: 'Operations',
-      managerId: shiftManager2.id,
+  const goal2 = await prisma.goal.create({
+    data: {
+      title: "Zero Safety Incidents",
+      description: "Maintain a perfect safety record throughout the fiscal year.",
+      thrustArea: "SAFETY",
+      uomType: UomType.ZERO,
+      targetValue: 0,
+      weightage: 30,
+      status: GoalStatus.APPROVED,
+      employeeId: employee.id,
+      lockedAt: new Date(),
     },
   });
-  console.log(`Created Employee 3: ${employee3.name}`);
 
-  const employee4 = await prisma.user.upsert({
-    where: { email: 'employee4@valence.com' },
-    update: { managerId: shiftManager2.id },
-    create: {
-      name: 'Employee 4',
-      email: 'employee4@valence.com',
-      role: Role.EMPLOYEE,
-      department: 'Operations',
-      managerId: shiftManager2.id,
+  const goal3 = await prisma.goal.create({
+    data: {
+      title: "New Product Line Integration",
+      description: "Successfully integrate the X-series production line by Q3.",
+      thrustArea: "GROWTH",
+      uomType: UomType.TIMELINE,
+      targetValue: 100,
+      weightage: 30,
+      status: GoalStatus.APPROVED,
+      employeeId: employee.id,
+      lockedAt: new Date(),
     },
   });
-  console.log(`Created Employee 4: ${employee4.name}`);
 
-  console.log('Seeding finished.');
+  console.log("✅ Goals created.");
+
+  // 4. Create Check-ins for Q1 and Q2
+  await prisma.checkIn.create({
+    data: {
+      goalId: goal1.id,
+      quarter: Quarter.Q1,
+      actualAchievement: 6.2,
+      progressStatus: ProgressStatus.ON_TRACK,
+      managerComment: "Good start, keep optimizing.",
+    },
+  });
+
+  await prisma.checkIn.create({
+    data: {
+      goalId: goal1.id,
+      quarter: Quarter.Q2,
+      actualAchievement: 4.8,
+      progressStatus: ProgressStatus.COMPLETED,
+      managerComment: "Excellent reduction in downtime.",
+    },
+  });
+
+  await prisma.checkIn.create({
+    data: {
+      goalId: goal2.id,
+      quarter: Quarter.Q1,
+      actualAchievement: 0,
+      progressStatus: ProgressStatus.COMPLETED,
+    },
+  });
+
+  console.log("✅ Check-ins created.");
+  console.log("✨ Seeding complete.");
 }
 
 main()

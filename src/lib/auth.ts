@@ -3,6 +3,8 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { db } from "@/lib/db";
 import { Adapter } from "next-auth/adapters";
 import AzureADProvider from "next-auth/providers/azure-ad";
+import GoogleProvider from "next-auth/providers/google";
+import EmailProvider from "next-auth/providers/email";
 import { Role } from "@prisma/client";
 
 export const authOptions: NextAuthOptions = {
@@ -35,6 +37,21 @@ export const authOptions: NextAuthOptions = {
           role: role,
         };
       },
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+    EmailProvider({
+      server: {
+        host: process.env.EMAIL_SERVER_HOST,
+        port: Number(process.env.EMAIL_SERVER_PORT),
+        auth: {
+          user: process.env.EMAIL_SERVER_USER,
+          pass: process.env.EMAIL_SERVER_PASSWORD,
+        },
+      },
+      from: process.env.EMAIL_FROM,
     }),
   ],
   session: {
