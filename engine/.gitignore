@@ -1,0 +1,11 @@
+# Python virtual environments & bytecode
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.lock
+CACHEDIR.TAG
+pyvenv.cfg
+dist/
+build/
+*.egg-info/
