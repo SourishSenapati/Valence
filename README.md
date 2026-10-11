@@ -117,3 +117,24 @@ Valence includes an open-source, agent-native chemical process simulation and co
 cd engine
 uv run test_engine.py
 ```
+
+---
+
+## Licensing, Student Grant & Commercial Terms
+
+This project is governed by the **Valence Source License 1.0** ([`LICENSE`](file:///d:/Engineering%20Software/Valence/LICENSE)):
+
+- **Students, Educators & Academic Researchers:** **100% Free** for personal, educational, and academic research purposes.
+- **Mandatory Attribution:** Any fork, modification, or presentation must prominently credit:
+  > *"Originally developed by Sourish Senapati (Valence Project - [https://github.com/SourishSenapati/Valence](https://github.com/SourishSenapati/Valence))"*
+- **Commercial & Enterprise Use:** **Strictly Prohibited without a separate Commercial Agreement.** Any corporate, revenue-generating, or proprietary production use requires a commercial license agreement, consulting contract, or employment engagement directly with the author.
+
+### Commercial Licensing & Employment Inquiries
+
+For commercial licensing, enterprise deployment, custom unit operations, or consulting/hiring inquiries:
+
+- **Author:** Sourish Senapati
+- **Email:** [sourishsenapati791@gmail.com](mailto:sourishsenapati791@gmail.com)
+- **GitHub:** [@SourishSenapati](https://github.com/SourishSenapati)
+
+
